@@ -12,7 +12,12 @@ wss.on('headers', (headers, req) => {
 });
 
 wss.on('connection', (ws, req) => {
-    console.log(ws)
-})
+    ws.send("you are connected to the websocket now ");
+    ws.on('message', (msg) => {
+        console.log(msg);
+    })
+});
+
+
 
 server.listen(8000);
