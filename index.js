@@ -1,23 +1,22 @@
 const http = require('http');
-const websocket = require('ws');
-
 const server = http.createServer((req, res) => {
     res.end('<h1>You are now connected to the server</h1>');
 });
 
-const wss = new websocket.Server({server});
+const io = require("socket.io")(server, {
+    cors: {
+      origin: "http://localhost:3000",
+      methods: ["GET", "POST"],
+    }
+  });
 
-wss.on('headers', (headers, req) => {
-    console.log(headers)
+
+io.on('connection', (socket, req) => {
+    console.log('someone has connected to the socket')
+    socket.emit('welcome',"Hello you are now connected to the web socket");
+    socket.on('message', (msg) => {
+        console.log(msg)
+    });
 });
 
-wss.on('connection', (ws, req) => {
-    ws.send("you are connected to the websocket now ");
-    ws.on('message', (msg) => {
-        console.log(msg);
-    })
-});
-
-
-
-server.listen(8000);
+server.listen(8000)
