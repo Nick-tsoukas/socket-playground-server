@@ -13,14 +13,11 @@ const io = require("socket.io")(expressServer, {
   });
 
   io.on('connection', (socket) => {
-    socket.on('messageToServer', (dataFromClient) => {
-        console.log(dataFromClient);
-    });
+    console.log('you are now connected to the Web Socket from server');
 
-    socket.emit('messageFromServer', {data: 'This is a message from the server '});
-
-    socket.on('message', (msg) => {
-       io.emit('messageToClients', {text : msg});
+    socket.on('message', (data) => {
+      console.log('message from server back to client ', data)
+      io.emit('message', data);
     });
    
   });
