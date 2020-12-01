@@ -13,12 +13,16 @@ const io = require("socket.io")(expressServer, {
   });
 
   io.on('connection', (socket) => {
-    console.log("a user is connected to the server");
-    
-    socket.emit('messageFromServer', {data: 'This is a message from the server '});
-
     socket.on('messageToServer', (dataFromClient) => {
-        console.log("should be logging")
         console.log(dataFromClient);
     });
+
+    socket.emit('messageFromServer', {data: 'This is a message from the server '});
+
+    socket.on('message', (msg) => {
+       io.emit('messageToClients', {text : msg});
+    });
+   
   });
+
+
